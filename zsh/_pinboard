@@ -1,0 +1,17 @@
+#compdef pinboard
+
+if (( CURRENT > 2 )); then
+  (( CURRENT-- ))
+  shift words
+  _call_function - _pinboard_${words[1]}
+  return
+else
+  local -a _pinboard_subcommands
+  _pinboard_subcommands=(
+    'add:add a URL to Pinboard'
+    'cleanup:an interactive command for deleting dead URLs from Pinboard'
+  )
+  _describe -t commands 'pinboard subcommands' _pinboard_subcommands && ret=0
+fi
+
+# vim:ft=zsh:ts=2
