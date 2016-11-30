@@ -1,0 +1,58 @@
+#!/usr/bin/env python2
+
+from helpers import credentials
+import requests
+import sys
+import webbrowser
+
+API_URL = "https://api.pinboard.in/v1/"
+DELETE_URL = API_URL + "posts/delete"
+POSTS_URL = API_URL + "posts/all"
+
+
+def params(defaults):
+    return dict({"format": "json", "auth_token": credentials.token()}.items()
+                + defaults.items())
+
+
+class Bookmark(object):
+    def __init__(self, item):
+        self.url = item["href"]
+        self.unread = item["toread"] == "yes"
+        self.hastags = len(item["tags"]) != 0
+
+    def delete(self):
+        requests.get(DELETE_URL, params=params({"url": self.url}))
+
+
+def get_items():
+    response = requests.get(POSTS_URL, params=params({}))
+    items = map(Bookmark, response.json())
+    return [item for item in items if item.unread or not item.hastags]
+
+
+def usage(prg):
+    print("Usage: %s [COUNT]" % prg)
+    sys.exit(2)
+
+
+def main(count):
+    items = get_items()
+    for i in range(count):
+        if i >= len(items):
+            break
+
+        item = items[i]
+        if webbrowser.open_new_tab(item.url):
+            item.delete()
+
+
+if __name__ == '__main__':
+    if len(sys.argv) != 2:
+        usage(sys.argv[0])
+    try:
+        open_count = int(sys.argv[1])
+    except ValueError:
+        usage(sys.argv[0])
+
+    main(open_count)
