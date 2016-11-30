@@ -9,6 +9,8 @@ This is a small set of scripts for working with
   add a URL to your read later on Pinboard
 - [cleanup](https://github.com/keith/pinboard/blob/master/src/pinboard-cleanup),
   remove old dead URLs on Pinboard
+- [open](https://github.com/keith/pinboard/blob/master/src/pinboard-open),
+  open unread bookmarks in your browser
 
 ### Installation
 
