@@ -2,7 +2,6 @@
 
 from helpers import credentials
 import requests
-import signal
 import sys
 import webbrowser
 
@@ -13,10 +12,6 @@ USER_AGENT = """Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1)
 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.1
 Safari/537.36""".replace("\n", " ")
 HEADERS = {"User-agent": USER_AGENT}
-
-
-def signal_handle(sig, frame):
-    sys.exit(1)
 
 
 def ask(status, URL):
@@ -74,6 +69,8 @@ def main():
                 item.delete()
 
 
-signal.signal(signal.SIGINT, signal_handle)
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        sys.exit(1)

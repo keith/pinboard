@@ -51,4 +51,7 @@ if __name__ == "__main__":
     except ValueError:
         usage(sys.argv[0])
 
-    main(url_string)
+    try:
+        main(url_string)
+    except KeyboardInterrupt:
+        sys.exit(1)

@@ -55,4 +55,7 @@ if __name__ == '__main__':
     except ValueError:
         usage(sys.argv[0])
 
-    main(open_count)
+    try:
+        main(open_count)
+    except KeyboardInterrupt:
+        sys.exit(1)
