@@ -7,7 +7,9 @@ DELETE_URL = API_URL + "posts/delete"
 POSTS_URL = API_URL + "posts/all"
 USER_AGENT = """Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1)
 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.1
-Safari/537.36""".replace("\n", " ")
+Safari/537.36""".replace(
+    "\n", " "
+)
 HEADERS = {"User-agent": USER_AGENT}
 _DEFAULT_PARAMS = {
     "auth_token": credentials.token(),
