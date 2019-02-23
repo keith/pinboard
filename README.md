@@ -18,5 +18,10 @@ This is a small set of scripts for working with
 brew install keith/formulae/pinboard
 ```
 
-Or put everything inside the `src` directory somewhere in your `$PATH`
-(and `_pinboard` if you want zsh completions)
+Or:
+
+```
+pip install .
+```
+
+(and `zsh/_pinboard` if you want zsh completions)

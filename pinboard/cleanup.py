@@ -1,8 +1,5 @@
-#!/usr/bin/env python2
-
 from helpers import credentials
 import requests
-import sys
 import webbrowser
 
 API_URL = "https://api.pinboard.in/v1/"
@@ -51,7 +48,7 @@ def get_items():
     return map(Bookmark, response.json())
 
 
-def main():
+def main(_):
     items = get_items()
     for item in items:
         try:
@@ -67,10 +64,3 @@ def main():
             delete = ask(status, item.url)
             if delete:
                 item.delete()
-
-
-if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        sys.exit(1)
