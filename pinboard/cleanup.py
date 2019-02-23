@@ -1,4 +1,4 @@
-from helpers import credentials
+from .helpers import credentials
 import requests
 import webbrowser
 
@@ -9,10 +9,15 @@ USER_AGENT = """Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1)
 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.1
 Safari/537.36""".replace("\n", " ")
 HEADERS = {"User-agent": USER_AGENT}
+_DEFAULT_PARAMS = {
+    "auth_token": credentials.token(),
+    "format": "json",
+    "User-agent": USER_AGENT,
+}
 
 
 def ask(status, URL):
-    answer = raw_input("%d Delete %s y/N/o: " % (status, URL)).lower()
+    answer = input("%d Delete %s y/N/o: " % (status, URL)).lower()
     if answer.startswith("o"):
         webbrowser.open_new_tab(URL)
         return ask(status, URL)
@@ -20,18 +25,12 @@ def ask(status, URL):
         return answer.startswith("y")
 
 
-def params(merged):
-    return dict({"format": "json",
-                 "User-agent": USER_AGENT,
-                 "auth_token": credentials.token()}.items() + merged.items())
-
-
 class Bookmark(object):
     def __init__(self, item):
         self.url = item["href"]
 
     def delete(self):
-        requests.get(DELETE_URL, params=params({"url": self.url}))
+        requests.get(DELETE_URL, params={**_DEFAULT_PARAMS, "url": self.url})
 
 
 def status_code(URL):
@@ -44,8 +43,8 @@ def status_code(URL):
 
 
 def get_items():
-    response = requests.get(POSTS_URL, params=params({}))
-    return map(Bookmark, response.json())
+    response = requests.get(POSTS_URL, params=_DEFAULT_PARAMS)
+    return list(map(Bookmark, response.json()))
 
 
 def main(_):

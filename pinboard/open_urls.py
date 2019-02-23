@@ -1,15 +1,11 @@
-from helpers import credentials
+from .helpers import credentials
 import requests
 import webbrowser
 
 API_URL = "https://api.pinboard.in/v1/"
 DELETE_URL = API_URL + "posts/delete"
 POSTS_URL = API_URL + "posts/all"
-
-
-def params(defaults):
-    return dict({"format": "json", "auth_token": credentials.token()}.items()
-                + defaults.items())
+_DEFAULT_PARAMS = {"format": "json", "auth_token": credentials.token()}
 
 
 class Bookmark(object):
@@ -19,11 +15,11 @@ class Bookmark(object):
         self.hastags = len(item["tags"]) != 0
 
     def delete(self):
-        requests.get(DELETE_URL, params=params({"url": self.url}))
+        requests.get(DELETE_URL, params={**_DEFAULT_PARAMS, "url": self.url})
 
 
 def get_items():
-    response = requests.get(POSTS_URL, params=params({}))
+    response = requests.get(POSTS_URL, params=_DEFAULT_PARAMS)
     items = map(Bookmark, response.json())
     return [item for item in items if item.unread or not item.hastags]
 

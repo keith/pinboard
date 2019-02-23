@@ -1,18 +1,9 @@
-from helpers import credentials
+from .helpers import credentials
 import requests
 import sys
 
 ADD_URL = "https://api.pinboard.in/v1/posts/add"
-
-
-def request_params(params):
-    return dict({"format": "json",
-                 "auth_token": credentials.token()}.items() + params.items())
-
-
-def usage(prg):
-    print("Usage: %s URL" % prg)
-    sys.exit(2)
+_DEFAULT_HEADERS = {"format": "json", "auth_token": credentials.token()}
 
 
 def format_url(url):
@@ -25,7 +16,7 @@ def format_url(url):
 def main(args):
     raw_url = args.url
     url = format_url(raw_url)
-    params = request_params({"url": url, "description": url, "toread": "yes"})
+    params = {**_DEFAULT_HEADERS, "url": url, "description": url, "toread": "yes"}
     response = requests.post(ADD_URL, params=params)
     if response.status_code != 200:
         print(response.text)
