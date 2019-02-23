@@ -21,7 +21,7 @@ brew install keith/formulae/pinboard
 Or:
 
 ```
-python setup.py install
+pip install .
 ```
 
 (and `zsh/_pinboard` if you want zsh completions)
