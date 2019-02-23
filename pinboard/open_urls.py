@@ -1,8 +1,5 @@
-#!/usr/bin/env python2
-
 from helpers import credentials
 import requests
-import sys
 import webbrowser
 
 API_URL = "https://api.pinboard.in/v1/"
@@ -31,31 +28,12 @@ def get_items():
     return [item for item in items if item.unread or not item.hastags]
 
 
-def usage(prg):
-    print("Usage: %s [COUNT]" % prg)
-    sys.exit(2)
-
-
-def main(count):
+def main(args):
     items = get_items()
-    for i in range(count):
+    for i in range(args.count):
         if i >= len(items):
             break
 
         item = items[i]
         if webbrowser.open_new_tab(item.url):
             item.delete()
-
-
-if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        usage(sys.argv[0])
-    try:
-        open_count = int(sys.argv[1])
-    except ValueError:
-        usage(sys.argv[0])
-
-    try:
-        main(open_count)
-    except KeyboardInterrupt:
-        sys.exit(1)

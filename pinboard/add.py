@@ -1,5 +1,3 @@
-#!/usr/bin/env python2
-
 from helpers import credentials
 import requests
 import sys
@@ -24,7 +22,8 @@ def format_url(url):
         return url
 
 
-def main(raw_url):
+def main(args):
+    raw_url = args.url
     url = format_url(raw_url)
     params = request_params({"url": url, "description": url, "toread": "yes"})
     response = requests.post(ADD_URL, params=params)
@@ -39,19 +38,4 @@ def main(raw_url):
     json = response.json()
     if json["result_code"] != "done":
         print(json)
-        sys.exit(1)
-
-
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        usage(sys.argv[0])
-
-    try:
-        url_string = str(sys.argv[1])
-    except ValueError:
-        usage(sys.argv[0])
-
-    try:
-        main(url_string)
-    except KeyboardInterrupt:
         sys.exit(1)
