@@ -11,7 +11,7 @@ setuptools.setup(
     author="Keith Smiley",
     author_email="keithbsmiley@gmail.com",
     install_requires=[
-        "requests==2.20.0",
+        "requests==2.31.0",
     ],
     packages=["pinboard", "pinboard.helpers"],
     entry_points={"console_scripts": ["pinboard=pinboard.__main__:main"]},
